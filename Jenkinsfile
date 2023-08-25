@@ -4,12 +4,7 @@ pipeline {
         maven 'Maven3'
     }
     stages{
-        stage('SCM'){
-            steps{
-                echo 'Checkout Maven project'
-                git branch: 'main', poll: false, url: 'https://github.com/vcjain/jenkins_pipeline_springboot_demo.git'
-            }
-        }
+        
         stage('Build'){
             steps{
                 echo 'Building Maven project'
