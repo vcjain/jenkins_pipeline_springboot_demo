@@ -1,4 +1,4 @@
-package CodeCoverageDemo;
+package com.vcjain.calculator;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 

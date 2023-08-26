@@ -1,4 +1,4 @@
-package CodeCoverageDemo;
+package com.vcjain.calculator;
 
 public class Operations {
 
