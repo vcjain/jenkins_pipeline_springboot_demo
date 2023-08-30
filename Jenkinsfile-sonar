@@ -16,13 +16,24 @@ pipeline {
                 sh 'mvn clean compile'
             }
         }
-        stage('scan'){
+        stage('SonarQube Analysis'){
             steps{
                 echo 'Scanning Maven project'
-                withSonarQubeEnv(installationName: 'sonarcloud') {
-                  sh './mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1:sonar'
-              }
+                withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
+                    withSonarQubeEnv(installationName: 'sonarcloud', credentialsId: 'sonarqube-token') { 
+                        sh 'mvn sonar:sonar -Dsonar.projectKey=sonardemo -Dsonar.organization=vcjain -Dsonar.host.url=https://sonarcloud.io'
+                        sh 'sleep 50'
+                        
+                    }
+                }    
             }
+        }
+        stage("Quality Gate") {
+          steps {
+            timeout(time: 2, unit: 'MINUTES') {
+              waitForQualityGate abortPipeline: true
+            }
+          }
         }
         stage('Test'){
             steps{
@@ -33,4 +44,6 @@ pipeline {
             }
         }
     }
+        
+
 }
