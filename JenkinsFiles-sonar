@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+    tools {
+        maven 'maven3'
+    }
+    stages{
+        
+        stage('checkout'){
+            steps{
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/vcjain/jenkins_pipeline_springboot_demo.git']])
+            }    
+        }
+        stage('Build'){
+            steps{
+                echo 'Building Maven project'
+                sh 'mvn clean compile'
+            }
+        }
+        stage('scan'){
+            steps{
+                echo 'Scaning Maven project'
+                withSonarQubeEnv(credentialsId: 'sonarqube-token') {
+                  sh './mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
+              }
+            }
+        }
+        stage('Test'){
+            steps{
+                echo 'Building Maven project'
+                sh 'mvn test'
+                junit '**/target/surefire-reports/*.xml'
+                jacoco classPattern: '**/target/classes', exclusionPattern: '**/*Test*.class', execPattern: '**/target/jacoco.exec', inclusionPattern: '**/*.class', sourceExclusionPattern: 'generated/**/*.java', sourceInclusionPattern: '**/*.java'
+            }
+        }
+    }
+}
