@@ -17,6 +17,7 @@
 		<java.version>19</java.version>
 		<jacoco.version>0.7.5.201505241946</jacoco.version>
 		<junit.version>4.12</junit.version>
+		<sonar.organization>vcjain</sonar.organization>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -38,6 +39,12 @@
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
 			<version>3.10.0</version>
+		</dependency>
+		<!-- Added dependency for Sonar Scanner -->
+		<dependency>
+			<groupId>org.sonarsource.scanner.maven</groupId>
+			<artifactId>sonar-maven-plugin</artifactId>
+			<version>3.9.1.2184</version>
 		</dependency>
 
 	</dependencies>
@@ -89,6 +96,7 @@
 			
 
 		</plugins>
+
 	</build>
 
 </project>
